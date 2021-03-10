@@ -41,35 +41,56 @@ column_names = ["j0_x",  "j0_y", "j1_x", "j1_y", "j2_x", "j2_y", "j3_x", "j3_y",
 
 DATASET_PATH = "poses/"
 
-X_train_path = DATASET_PATH + "X_train.txt"
-X_test_path = DATASET_PATH + "X_test.txt"
+# X_train_path = DATASET_PATH + "X_train.txt"
+# X_test_path = DATASET_PATH + "X_test.txt"
 
-y_train_path = DATASET_PATH + "Y_train.txt"
-y_test_path = DATASET_PATH + "Y_test.txt"
+# y_train_path = DATASET_PATH + "Y_train.txt"
+# y_test_path = DATASET_PATH + "Y_test.txt"
 
-x_train = pd.read_csv(X_train_path, sep=",", names=column_names, header=None, dtype=np.float32)
-x_test = pd.read_csv(X_test_path, sep=",", names=column_names, header=None, dtype=np.float32)
-y_train = pd.read_csv(y_train_path, names=["labels"], dtype=np.int_)
-y_test = pd.read_csv(y_test_path, names=["labels"], dtype=np.int_)
+# x_train = pd.read_csv(X_train_path, sep=",", names=column_names, header=None, dtype=np.float32)
+# x_test = pd.read_csv(X_test_path, sep=",", names=column_names, header=None, dtype=np.float32)
+# y_train = pd.read_csv(y_train_path, names=["labels"], dtype=np.int_)
+# y_test = pd.read_csv(y_test_path, names=["labels"], dtype=np.int_)
+
+x_train_path = "shuffled_x_train_data.csv"
+y_train_path = "shuffled_y_train_data.csv"
+x_test_path = "shuffled_x_test_data.csv"
+y_test_path = "shuffled_y_test_data.csv"
+
+x_train = pd.read_csv(x_train_path, sep="\t", dtype=np.float32)
+x_test = pd.read_csv(x_test_path, sep="\t", dtype=np.float32)
+y_train = pd.read_csv(y_train_path, sep="\t", dtype=np.int_)
+y_test = pd.read_csv(y_test_path, sep="\t", dtype=np.int_)
+
 
 def chunker(x_seq, y_seq, seq_size):
     for i, index in enumerate(range(0, len(x_seq), seq_size)):
         yield x_seq.iloc[index:index + seq_size].values, y_seq.iloc[i].values
 
 
+def unnormalize(data):
+    for i, column in enumerate(data):
+        if i % 2 == 0:
+            data[column] = data[column] * 640
+        else:
+            data[column] = data[column] * 480
+    return data
+
+
+unnormalize(x_test)
+unnormalize(x_train)
+
 if __name__ == "__main__":
     out = cv2.VideoWriter(
-        "poses_test.mp4", cv2.VideoWriter_fourcc(*'DIVX'), 30, (640, 480))
-    for index, (poses, label) in enumerate(chunker(x_test, y_test, sequence_length)):
+        "poses_train.mp4", cv2.VideoWriter_fourcc(*'DIVX'), 30, (640, 480))
+    for index, (poses, label) in enumerate(chunker(x_train, y_train, sequence_length)):
         if index % 300 == 0:
             print(index)
-        if index > 10:
-            break
+        # if index > 10:
+        #     break
         for pose in poses:
             img = np.zeros((480, 640, 3), np.uint8)
-            # cv2.waitKey(0)
-            # cv2.imshow("l", img)
-            cv2.putText(img, LABELS[int(label)], (10, 10),
+            cv2.putText(img, LABELS[int(label)], (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
             for i in range(0, len(pose), 2):
                 point = (int(pose[i]), int(pose[i+1]))
