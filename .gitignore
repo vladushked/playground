@@ -1,3 +1,6 @@
 .vscode/settings.json
 data
 poses_dataset
+*.mp4
+*.csv
+poses
