@@ -1,0 +1,3 @@
+[submodule "poses/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input"]
+	path = poses/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input
+	url = https://github.com/stuarteiffert/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input.git
