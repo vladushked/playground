@@ -2,3 +2,8 @@
 poses_dataset
 *.mp4
 *.csv
+build/
+install/
+log/
+.idea
+cmake-build-*
