@@ -7,3 +7,4 @@ install/
 log/
 .idea
 cmake-build-*
+.vscode
