@@ -1,0 +1,94 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        if (target == "0000")
+            return 0;
+        
+        unordered_set<string> dead_ends(deadends.begin(), deadends.end());
+        if (dead_ends.count("0000") || dead_ends.count(target))
+            return -1;
+        
+        
+        
+        queue<string> q;
+        q.push("0000");
+        unordered_set<string> q_visited;
+        q_visited.insert("0000");
+        
+        queue<string> p;
+        p.push(target);
+        unordered_set<string> p_visited;
+        p_visited.insert(target);
+        
+
+        int level = 0;
+        
+        while (!q.empty() && !p.empty()) {
+            for (int size = q.size(); size > 0; size--) {
+                string lock_position = q.front();
+                q.pop();
+                
+                if (dead_ends.count(lock_position)) {
+                    size--;
+                    continue;
+                }
+                
+                if (p_visited.count(lock_position)) {
+                    return level;
+                }
+                
+                for (int i = 0; i < 4; i++) {
+                    char c = lock_position[i];
+                    string str1 = lock_position.substr(0, i) + 
+                        to_string(c == '9' ? 0 : c - '0' + 1) + lock_position.substr(i + 1);
+                    string str2 = lock_position.substr(0, i) + 
+                        to_string(c == '0' ? 9 : c - '0' - 1) + lock_position.substr(i + 1);
+                    if (!q_visited.count(str1) && !dead_ends.count(str1)) {
+                        q.push(str1);
+                        q_visited.insert(str1);
+                    }
+                    if (!q_visited.count(str2) && !dead_ends.count(str2)) {
+                        q.push(str2);
+                        q_visited.insert(str2);
+                    }
+                }
+            }
+            
+            level++;
+            
+            for (int size = p.size(); size > 0; size--) {
+                string lock_position = p.front();
+                p.pop();
+                
+                if (dead_ends.count(lock_position)) {
+                    size--;
+                    continue;
+                }
+                
+                if (q_visited.count(lock_position)) {
+                    return level;
+                }
+                
+                for (int i = 0; i < 4; i++) {
+                    char c = lock_position[i];
+                    string str1 = lock_position.substr(0, i) + 
+                        to_string(c == 9 ? 0 : c - '0' + 1) + lock_position.substr(i + 1);
+                    string str2 = lock_position.substr(0, i) + 
+                        to_string(c == 0 ? 9 : c - '0' - 1) + lock_position.substr(i + 1);
+                    if (!p_visited.count(str1) && !dead_ends.count(str1)) {
+                        p.push(str1);
+                        p_visited.insert(str1);
+                    }
+                    if (!p_visited.count(str2) && !dead_ends.count(str2)) {
+                        p.push(str2);
+                        p_visited.insert(str2);
+                    }
+                }
+            }
+            
+            level++;
+        }
+        
+        return -1;
+    }
+};
