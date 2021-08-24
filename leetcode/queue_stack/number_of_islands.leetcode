@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        vector<vector<bool>> visited(m, vector<bool>(n));
+        
+        int count = 0;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1' && !visited[i][j]) {
+                    BFS(grid, visited, i, j);
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    void BFS(vector<vector<char>>& grid, vector<vector<bool>>& visited, int si, int sj) {
+        
+        int row[] = {-1, 0, 1, 0};
+        int col[] = {0, 1, 0, -1};
+        
+        queue<pair<int, int>> q;
+        q.push(make_pair(si, sj));
+        visited[si][sj] = true;
+        
+        while (!q.empty()) {
+            int i = q.front().first;
+            int j = q.front().second;
+            q.pop();
+            
+            for(int k = 0; k < 4; k++) {
+                if (isSafe(grid, visited, i + row[k], j + col[k])) {
+                    q.push(make_pair(i + row[k], j + col[k]));
+                    visited[i + row[k]][j + col[k]] = true;
+                }
+            }
+        }
+        
+    }
+    
+    bool isSafe(vector<vector<char>>& grid, vector<vector<bool>>& visited, int i, int j) {
+        return (i >= 0) && (i < grid.size()) && (j >= 0) && (j < grid[0].size()) && grid[i][j] == '1' && !visited[i][j]; 
+    }
+};
