@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> s;
+        unordered_set<string> o;
+        o.insert("+");
+        o.insert("-");
+        o.insert("/");
+        o.insert("*");
+        
+        for (int i = 0; i < tokens.size(); i++) {
+            if (o.count(tokens[i])) {
+                int right = s.top();
+                s.pop();
+                int left = s.top();
+                s.pop();
+
+                s.push(calculate(left, right, tokens[i]));
+            } else {
+                s.push(stoi(tokens[i]));
+            }
+        }
+        
+        return s.top();
+    }
+    
+    int calculate(int left, int right, string sign) {
+        if (sign == "+")
+            return left + right;
+        else if (sign == "-")
+            return left - right;
+        else if (sign == "/")
+            return int(left / right);
+        else if (sign == "*")
+            return left * right;
+        else
+            return 0;
+    }
+};
