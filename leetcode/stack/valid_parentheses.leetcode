@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> p_stack;
+        unordered_set<char> closed_p;
+        closed_p.insert(')');
+        closed_p.insert(']');
+        closed_p.insert('}');
+        
+        for (int i = 0; i < s.length(); i++){
+            char c = s[i];
+            if (closed_p.count(c)) {
+                if (p_stack.empty())
+                    return false;
+                char last_open = p_stack.top();
+                if (isPair(last_open, c)) {
+                    p_stack.pop();
+                } else
+                    return false;
+            } else {
+                p_stack.push(c);
+            }
+        }
+        
+        if (p_stack.empty())
+            return true;
+        else
+            return false;
+    }
+    
+    bool isPair(char opened, char closed) {
+        if (opened == '(' && closed == ')')
+            return true;
+        else if (opened == '[' && closed == ']')
+            return true;
+        else if (opened == '{' && closed == '}')
+            return true;
+        else 
+            return false;
+    }
+};
