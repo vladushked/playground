@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int numSquares(int n) {
+        
+        queue<int> q;
+        unordered_set<int> visited;
+        vector<int> squares;
+        int step = 1;
+        
+        for (int i = 1; i*i <= n; i++) {
+            int square = i*i;
+            visited.insert(square);
+            squares.push_back(square);
+            q.push(square);
+            if (square == n)
+                return step;
+        }
+
+        while (!q.empty()) {
+            step++;
+            int size = q.size();
+            for (int i = 0 ; i < size; i++) {
+                int candidate = q.front();
+                q.pop();
+
+                for (auto square : squares) {
+                    int sum = candidate + square;
+                    if (sum == n) {
+                        return step;
+                    }
+                    if (sum < n && !visited.count(sum)) {
+                        q.push(sum);
+                        visited.insert(sum);
+                    }
+                }
+            }
+        }
+        
+        return step;
+    }
+};
