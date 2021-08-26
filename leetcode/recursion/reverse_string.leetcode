@@ -1,0 +1,15 @@
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        visit(s, 0);
+    }
+    
+    void visit(vector<char>& s, int step) {
+        if (step < s.size()) {
+            char c = s[step];
+            visit(s, step + 1); 
+            s.push_back(c);
+        } else
+            s.clear();
+    }
+};
