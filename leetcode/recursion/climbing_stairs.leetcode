@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int climbStairs(int n) {
+        unordered_map<int, int> cache;
+        
+        return calculate(n, cache);
+    }
+    
+    int calculate(int num, unordered_map<int, int>& cache) {
+        auto elem = cache.find(num);
+        if (elem != cache.end()) {
+            return elem->second;
+        }
+        if (num <= 3) 
+            return num;
+        int result = 0;
+        result = calculate(num-1, cache) + calculate(num-2, cache);
+        // keep the result in cache.
+        cache[num]= result;
+        
+        return result;
+    }
+};
