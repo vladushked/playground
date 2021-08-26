@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int fib(int N) {
+        if (N <= 1) 
+            return N;
+        unordered_map<int, int> cache (N + 1);
+        
+        return calculate(N, cache);
+    }
+    
+    int calculate(int num, unordered_map<int, int>& cache) {
+        auto elem = cache.find(num);
+        if (elem != cache.end()) {
+            return elem->second;
+        }
+        
+        int result;
+        if (num < 2) {
+          result = num;
+        } else {
+          result = calculate(num-1, cache) + calculate(num-2, cache);
+        }
+        // keep the result in cache.
+        cache[num]= result;
+        
+        return result;
+    }
+};
