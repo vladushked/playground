@@ -1,0 +1,51 @@
+
+// Свертка списка в диапазоны
+// Набор целых неотрицательных и полностью различных чисел
+// [2, 5, 3, 8, 4, 7, 12] -> "2-5,7-8,12"
+
+using namespace std;
+
+class Solution {
+    string diapason (vector<int>& nums) {
+        
+        vector<int> sorted = sort(nums);
+        
+        if (nums.size() == 0) 
+            return "";
+        else if (nums.size() == 1) 
+            return to_str(nums[0]);
+        
+        string to_return = "";
+        vector<int> temp;
+        temp.push_back(nums[0]);
+        
+        for (int i = 1; i < nums.size(); i++) {
+            int diff = nums[i] - nums[i-1];
+            if (diff == 1) {
+                temp.push_back(nums[i]);
+            } else {
+                if (!to_return.empty())
+                    to_string += ",";
+                if (temp.size() == 1)
+                    to_string += to_str(temp.back());
+                else
+                    to_string += to_str(temp.front()) + "-" +  to_str(temp.back());
+                temp.clear();
+                temp.push_back(nums[i]);
+            }
+        }
+        
+        if (temp.size() > 0) {
+            if (!to_return.empty())
+                    to_string += ",";
+            if (temp.size() == 1)
+                    to_string += to_str(temp.back());
+            else
+                to_string += to_str(temp.front()) + "-" +  to_str(temp.back());
+        }
+        
+        return to_return;
+    }
+ 
+}
+

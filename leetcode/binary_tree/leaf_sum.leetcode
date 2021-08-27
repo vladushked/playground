@@ -1,0 +1,28 @@
+// Сумма листьев бинарного дерева
+
+struct ListNode {
+    int val,
+    ListNode* left,
+    ListNode* right,
+    ListNode(),
+}
+
+class Solution {
+    int summa (ListNode* root) {
+        if (!root)
+            return 0;
+
+        return visitor(root);
+    }
+    
+    int visitor (ListNode* root) {
+        if (!root->left && !root->right)
+            return root->val;
+    
+        int left = visitor(root->left);
+        int right = visitor(root->right);
+        
+        return left + right;
+
+    }
+}
