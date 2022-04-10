@@ -1,3 +1,6 @@
 [submodule "poses/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input"]
 	path = poses/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input
 	url = https://github.com/stuarteiffert/RNN-for-Human-Activity-Recognition-using-2D-Pose-Input.git
+[submodule "object_detection/yolov5"]
+	path = object_detection/yolov5
+	url = https://github.com/ultralytics/yolov5.git
